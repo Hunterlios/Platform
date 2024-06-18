@@ -10,12 +10,17 @@ export async function middleware(request: NextRequest) {
   if (!token || !tokenVerified) {
     console.log("middleware ACTIVE REDIRECT TO HOME");
     return NextResponse.redirect(new URL("/", request.url));
-  } else if (request.nextUrl.pathname.startsWith("/dashboard")) {
-    console.log("middleware ACTIVE REDIRECT TO DASHBOARD");
-    return NextResponse.rewrite(new URL("/dashboard", request.url));
+  } else {
+    return NextResponse.next();
   }
 }
 
 export const config = {
-  matcher: ["/dashboard", "/changePassword", "/registerAdmin"],
+  matcher: [
+    "/dashboard",
+    "/changePassword",
+    "/registerAdmin",
+    "/dashboard/courses",
+    "/dashboard/courses/:courseId*",
+  ],
 };

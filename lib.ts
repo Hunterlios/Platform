@@ -6,7 +6,6 @@ const checkToken = async (token: string) => {
     try {
       const decodedToken = jwt.decode(token as string) as { sub: string };
       email = decodedToken.sub;
-      console.log("email: ", email);
       const response = await fetch(
         `http://localhost:8080/api/v1/users/email/${email}`,
         {

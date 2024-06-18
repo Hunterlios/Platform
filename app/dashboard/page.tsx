@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Users from "../components/Users";
+import Courses from "../components/Courses";
 
 export default function Dashboard() {
   const [user, setUser] = useState({
@@ -12,7 +14,6 @@ export default function Dashboard() {
     email: "",
     role: "",
   });
-  const [admin, setAdmin] = useState(false);
   const router = useRouter();
 
   const getUser = async () => {
@@ -30,9 +31,7 @@ export default function Dashboard() {
         );
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           setUser(data);
-          console.log(user);
         } else {
           alert("Error: " + response.statusText);
           router.push("/");
@@ -46,9 +45,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     getUser();
-    if (user.role === "ADMIN") {
-      setAdmin(true);
-    }
   }, []);
 
   const logOut = () => {
@@ -63,7 +59,13 @@ export default function Dashboard() {
         <p className="text-xl">Welcome to your dashboard!</p>
         {user.firstName ? (
           <p className="text-xl">
-            You are now logged in as: {user.firstName} {user.lastName}
+            You are now logged in as:{" "}
+            <Link
+              className="hover:cursor-pointer hover:text-red-600"
+              href={"/dashboard/user"}
+            >
+              {user.firstName} {user.lastName}
+            </Link>
           </p>
         ) : (
           <p className="text-xl">Loading...</p>
@@ -87,6 +89,8 @@ export default function Dashboard() {
       >
         Register New Admin
       </Link>
+      <Users />
+      <Courses role={user.role} />
     </main>
   ) : (
     <main className="flex min-h-screen flex-col items-center p-24 font-mono">
@@ -113,6 +117,7 @@ export default function Dashboard() {
       >
         Change Password
       </Link>
+      <Courses role={user.role} />
     </main>
   );
 }

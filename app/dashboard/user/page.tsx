@@ -1,11 +1,49 @@
-export default function Home() {
+"use client";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+
+export default function User() {
+  const [user, setUser] = useState({
+    id: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: "",
+  });
+  const getUser = async () => {
+    const token = Cookies.get("token");
+    if (token) {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/v1/users/current",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data);
+        } else {
+          alert("Error: " + response.statusText);
+        }
+      } catch (error) {
+        alert("Error: " + error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          USER PAGE
-        </p>
-      </div>
+    <main className="">
+      <h1>
+        User: {user.firstName} {user.lastName}
+      </h1>
     </main>
   );
 }
