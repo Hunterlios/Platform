@@ -38,6 +38,12 @@ export default function changePassword() {
 
   return (
     <div className="font-mono flex flex-col items-center justify-center min-h-screen">
+      <button
+        onClick={() => router.back()}
+        className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+      >
+        Go back
+      </button>
       <h1 className="text-6xl mb-5">Change Password</h1>
       <form
         id="changePasswordForm"

@@ -3,7 +3,7 @@ import { useState, useEffect, FormEvent } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 
-function Courses({ role }: { role: string }) {
+function CoursesList({ role }: { role: string }) {
   const [courses, setCourses] = useState([]);
   const token = Cookies.get("token");
   const isAdmin: boolean = role === "ADMIN" ? true : false;
@@ -12,6 +12,7 @@ function Courses({ role }: { role: string }) {
     try {
       let response: Response;
       if (isAdmin) {
+        console.log("isAdmin: ", isAdmin);
         response = await fetch(
           "http://localhost:8080/api/v1/courses/myCoursesAdmin",
           {
@@ -27,6 +28,7 @@ function Courses({ role }: { role: string }) {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         });
       }
@@ -95,7 +97,7 @@ function Courses({ role }: { role: string }) {
   }, []);
 
   return isAdmin ? (
-    <div className="min-w-80 flex flex-col">
+    <div className="w-80 flex flex-col justify-center item-center">
       <h1 className="text-center my-5 text-4xl">Curses</h1>
       <form
         id="changePasswordForm"
@@ -116,7 +118,7 @@ function Courses({ role }: { role: string }) {
       </form>
 
       <ul>
-        {courses.slice(0, 10).map((course: any) => (
+        {courses.map((course: any) => (
           <li
             className="border-b-2 border-white border-opacity-50 mb-3 flex justify-between items-center"
             key={course.id}
@@ -134,18 +136,12 @@ function Courses({ role }: { role: string }) {
           </li>
         ))}
       </ul>
-      <Link
-        href={"/dashboard/courses"}
-        className="bg-white text-black mt-5 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-      >
-        Show more...
-      </Link>
     </div>
   ) : (
-    <div className="min-w-80 flex flex-col">
+    <div className="w-80 flex flex-col justify-center item-center">
       <h1 className="text-center my-5 text-4xl">Curses</h1>
       <ul>
-        {courses.slice(0, 10).map((course: any) => (
+        {courses.map((course: any) => (
           <li
             className="border-b-2 border-white border-opacity-50 mb-3"
             key={course.id}
@@ -162,14 +158,8 @@ function Courses({ role }: { role: string }) {
           </li>
         ))}
       </ul>
-      <Link
-        href={"/dashboard/courses"}
-        className="bg-white text-black mt-5 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-      >
-        Show more...
-      </Link>
     </div>
   );
 }
 
-export default Courses;
+export default CoursesList;

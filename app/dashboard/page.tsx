@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Users from "../components/Users";
-import Courses from "../components/Courses";
+import CoursesShortList from "../components/CoursesShortList";
+import InvitationsList from "../components/InvitationsList";
 
 export default function Dashboard() {
   const [user, setUser] = useState({
@@ -89,8 +89,8 @@ export default function Dashboard() {
       >
         Register New Admin
       </Link>
-      <Users />
-      <Courses role={user.role} />
+      <CoursesShortList role={user.role} />
+      <InvitationsList />
     </main>
   ) : (
     <main className="flex min-h-screen flex-col items-center p-24 font-mono">
@@ -117,7 +117,7 @@ export default function Dashboard() {
       >
         Change Password
       </Link>
-      <Courses role={user.role} />
+      <CoursesShortList role={user.role} />
     </main>
   );
 }

@@ -10,7 +10,11 @@ export async function middleware(request: NextRequest) {
   if (!token || !tokenVerified) {
     console.log("middleware ACTIVE REDIRECT TO HOME");
     return NextResponse.redirect(new URL("/", request.url));
-  } else {
+  }
+  //else if (request.nextUrl.searchParams.get("rol")) {
+  //   return NextResponse.redirect(new URL("/dashboard/courses", request.url));
+  //}
+  else {
     return NextResponse.next();
   }
 }
