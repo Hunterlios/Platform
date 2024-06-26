@@ -53,42 +53,46 @@ export default function Dashboard() {
   };
 
   return user.role === "ADMIN" ? (
-    <main className="flex min-h-screen flex-col items-center p-24 font-mono">
+    <main className="flex min-h-screen flex-col items-center justify-center p-24 font-mono">
       <h1 className="text-7xl">Admin Dashboard</h1>
       <div className="flex flex-col gap-2 mt-10 items-center">
-        <p className="text-xl">Welcome to your dashboard!</p>
         {user.firstName ? (
           <p className="text-xl">
-            You are now logged in as:{" "}
-            <Link
+            Zalogowano jako: {user.firstName} {user.lastName}
+            {/* <Link
               className="hover:cursor-pointer hover:text-red-600"
               href={"/dashboard/user"}
             >
               {user.firstName} {user.lastName}
-            </Link>
+            </Link> */}
           </p>
         ) : (
-          <p className="text-xl">Loading...</p>
+          <div className="flex justify-center items-center font-mono min-h-screen">
+            <h1 className="text-xl">Loading...</h1>
+          </div>
         )}
       </div>
-      <button
-        onClick={logOut}
-        className="bg-white text-black mt-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-      >
-        Log out
-      </button>
-      <Link
-        className="bg-white text-black mt-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-        href={"/changePassword"}
-      >
-        Change Password
-      </Link>
-      <Link
-        className="bg-white text-black mt-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-        href={"/registerAdmin"}
-      >
-        Register New Admin
-      </Link>
+      <div className="flex w-2/3 justify-evenly items-center">
+        <button
+          onClick={logOut}
+          className="bg-white w-56 text-center text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+        >
+          Wyloguj
+        </button>
+        <Link
+          className="bg-white w-56 text-center text-black mt-8 px-4 py-2.5 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+          href={"/changePassword"}
+        >
+          Zmień hasło
+        </Link>
+        <Link
+          className="bg-white w-56 text-center text-black mt-8 px-4 py-2.5 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+          href={"/registerAdmin"}
+        >
+          Zarejestruj admina
+        </Link>
+      </div>
+
       <CoursesShortList role={user.role} />
       <InvitationsList />
     </main>
@@ -96,27 +100,30 @@ export default function Dashboard() {
     <main className="flex min-h-screen flex-col items-center p-24 font-mono">
       <h1 className="text-7xl">User Dashboard</h1>
       <div className="flex flex-col gap-2 mt-10 items-center">
-        <p className="text-xl">Welcome to your dashboard!</p>
         {user.firstName ? (
           <p className="text-xl">
-            You are now logged in as: {user.firstName} {user.lastName}
+            Zalogowano jako: {user.firstName} {user.lastName}
           </p>
         ) : (
-          <p className="text-xl">Loading...</p>
+          <div className="flex justify-center items-center font-mono min-h-screen">
+            <h1 className="text-xl">Loading...</h1>
+          </div>
         )}
       </div>
-      <button
-        onClick={logOut}
-        className="bg-white text-black mt-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-      >
-        Log out
-      </button>
-      <Link
-        className="bg-white text-black mt-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-        href={"/changePassword"}
-      >
-        Change Password
-      </Link>
+      <div className="flex w-2/3 justify-evenly items-center">
+        <button
+          onClick={logOut}
+          className="bg-white w-56 text-center text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+        >
+          Wyloguj
+        </button>
+        <Link
+          className="bg-white w-56 text-center text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+          href={"/changePassword"}
+        >
+          Zmień hasło
+        </Link>
+      </div>
       <CoursesShortList role={user.role} />
     </main>
   );

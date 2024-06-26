@@ -26,5 +26,6 @@ export const config = {
     "/registerAdmin",
     "/dashboard/courses",
     "/dashboard/courses/:courseId*",
+    "/dashboard/courses/:courseId*/:taskId*",
   ],
 };

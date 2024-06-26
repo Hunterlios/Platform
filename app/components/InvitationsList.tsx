@@ -2,7 +2,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import { get } from "http";
 
 function InvitationsList() {
   const [invitations, setInvitations] = useState([]);
@@ -24,10 +23,10 @@ function InvitationsList() {
         const data = await response.json();
         setInvitations(data);
       } else {
-        alert("Error: " + response.statusText);
+        console.log("Error: " + response.statusText);
       }
     } catch (error) {
-      alert("Error: " + error);
+      console.log("Error: " + error);
     }
   };
 
@@ -47,10 +46,10 @@ function InvitationsList() {
         alert("Invitation accepted");
         getInvitations();
       } else {
-        alert("Error: " + response.statusText);
+        console.log("Error: " + response.statusText);
       }
     } catch (error) {
-      alert("Error: " + error);
+      console.log("Error: " + error);
     }
   };
 
@@ -70,10 +69,10 @@ function InvitationsList() {
         alert("Invitation declined");
         getInvitations();
       } else {
-        alert("Error: " + response.statusText);
+        console.log("Error: " + response.statusText);
       }
     } catch (error) {
-      alert("Error: " + error);
+      console.log("Error: " + error);
     }
   };
 
@@ -81,39 +80,36 @@ function InvitationsList() {
     getInvitations();
   }, []);
 
-  return (
+  return invitations.length > 0 ? (
     <div>
-      <h1 className="text-4xl mt-20">Invitations List</h1>
+      <h1 className="text-4xl mt-20">Prośby o dodanie do kursu</h1>
       <div className="mt-10">
         {invitations.map((invitation: any) => (
-          <div
-            key={invitation.id}
-            className="border border-gray-300 p-4 rounded-md mt-4"
-          >
+          <div key={invitation.id} className="border border-gray-300 p-4 mt-4">
             <p>
-              User: {invitation.user.firstName} {invitation.user.lastName} -{" "}
-              {invitation.user.email}
+              Użytkownik: {invitation.user.firstName} {invitation.user.lastName}{" "}
+              - {invitation.user.email}
             </p>
-            <p>Want to join: {invitation.course.name}</p>
+            <p>Kurs: {invitation.course.name}</p>
             <div className="flex justify-between mt-2">
               <button
                 onClick={() => handleAccept(invitation.id)}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-2"
               >
-                Accept
+                Zaakceptuj
               </button>
               <button
                 onClick={() => handleDecline(invitation.id)}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2"
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mt-2"
               >
-                Decline
+                Odmów
               </button>
             </div>
           </div>
         ))}
       </div>
     </div>
-  );
+  ) : null;
 }
 
 export default InvitationsList;

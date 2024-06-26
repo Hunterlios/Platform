@@ -29,12 +29,6 @@ export default function Form() {
   };
 
   useEffect(() => {
-    // test walidacji losowego tokenu - działa - DO USUNIĘCIA
-    // Cookies.set(
-    //   "token",
-    //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-    //   { expires: 1 }
-    // );
     tokenValidation();
   }, []);
 
@@ -59,31 +53,38 @@ export default function Form() {
       const tokenData = await response.json();
       const { token } = tokenData;
       Cookies.set("token", token, { expires: 1 });
-      alert("Login successful");
+      alert("Logowanie zakończone sukcesem");
       router.push("/dashboard");
     } catch (error) {
-      alert("Login failed " + error);
+      alert("Niepoprawne dane logowania");
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-2 mx-auto max-w-md mt-10"
+      className="flex flex-col gap-2 mx-auto max-w-md mt-10 font-mono"
     >
       <input
         className="border border-black text-black"
         type="email"
-        placeholder="email"
+        placeholder="Email"
         name="email"
+        required
       />
       <input
         className="border border-black text-black"
         type="password"
-        placeholder="password"
+        placeholder="Hasło"
         name="password"
+        required
       />
-      <button type="submit">Login</button>
+      <button
+        className="bg-white text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+        type="submit"
+      >
+        Zaloguj
+      </button>
     </form>
   );
 }

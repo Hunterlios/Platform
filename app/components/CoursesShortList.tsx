@@ -97,7 +97,7 @@ function CoursesShortList({ role }: { role: string }) {
 
   return isAdmin ? (
     <div className="w-1/2 m-auto flex flex-col justify-center item-center">
-      <h1 className="text-center my-5 text-4xl">Curses</h1>
+      <h1 className="text-center my-5 text-4xl">Kursy</h1>
       <form
         id="changePasswordForm"
         onSubmit={handleAddCourse}
@@ -106,20 +106,21 @@ function CoursesShortList({ role }: { role: string }) {
         <input
           type="text"
           className="min-w-[60%] mb-5 p-2 text-black"
-          placeholder="Course Name"
+          placeholder="Nazwa kursu"
           id="courseName"
           name="courseName"
+          maxLength={50}
           required
         />
         <button className="bg-red-500 text-white p-2 w-full mb-5" type="submit">
-          Add Course
+          Dodaj kurs
         </button>
       </form>
 
       <ul>
         {courses.slice(0, 10).map((course: any) => (
           <li
-            className="border-b-2 border-white border-opacity-50 mb-3 flex justify-between items-center"
+            className="border-b-2 border-white border-opacity-50 mb-3 flex justify-between items-center hover:bg-gray-200 transition-transform: duration-500 ease-in-out hover:text-black"
             key={course.id}
           >
             <Link href={`/dashboard/courses/${course.id}`}>
@@ -130,21 +131,21 @@ function CoursesShortList({ role }: { role: string }) {
               className="bg-red-500 text-white px-2 py-2 ml-5"
               onClick={() => deleteCourse(course.id)}
             >
-              Delete
+              Usuń kurs
             </button>
           </li>
         ))}
       </ul>
       <Link
         href={"/dashboard/courses"}
-        className="bg-white text-black mt-5 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+        className="bg-white text-black mt-5 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
       >
-        Show more...
+        Więcej...
       </Link>
     </div>
   ) : (
     <div className="w-1/2 m-auto flex flex-col justify-center item-center">
-      <h1 className="text-center my-5 text-4xl">Curses</h1>
+      <h1 className="text-center my-5 text-4xl">Kursy</h1>
       <ul>
         {courses.slice(0, 10).map((course: any) => (
           <li
@@ -165,9 +166,9 @@ function CoursesShortList({ role }: { role: string }) {
       </ul>
       <Link
         href={"/dashboard/courses"}
-        className="bg-white text-black mt-5 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+        className="bg-white text-black mt-5 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
       >
-        Show more...
+        Więcej...
       </Link>
     </div>
   );

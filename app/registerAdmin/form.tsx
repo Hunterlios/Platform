@@ -46,32 +46,32 @@ export default function Form() {
       <input
         className="border border-black text-black"
         type="firstName"
-        placeholder="firstName"
+        placeholder="Imie"
         name="firstName"
       />
       <input
         className="border border-black text-black"
         type="lastName"
-        placeholder="lastName"
+        placeholder="Nazwisko"
         name="lastName"
       />
       <input
         className="border border-black text-black"
         type="email"
-        placeholder="email"
+        placeholder="Email"
         name="email"
       />
       <input
         className="border border-black text-black"
         type="password"
-        placeholder="password"
+        placeholder="Hasło"
         name="password"
       />
       <button
-        className="bg-white text-black mt-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out "
+        className="bg-white text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out "
         type="submit"
       >
-        Register New Admin
+        Zarejestruj admina
       </button>
     </form>
   );

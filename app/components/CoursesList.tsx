@@ -9,8 +9,8 @@ function CoursesList({ role }: { role: string }) {
   const isAdmin: boolean = role === "ADMIN" ? true : false;
 
   const getCurses = async () => {
+    let response: Response;
     try {
-      let response: Response;
       if (isAdmin) {
         console.log("isAdmin: ", isAdmin);
         response = await fetch(
@@ -36,10 +36,10 @@ function CoursesList({ role }: { role: string }) {
         const data = await response.json();
         setCourses(data);
       } else {
-        alert("Error: " + response.statusText);
+        console.log("Error: " + response.statusText);
       }
     } catch (error) {
-      alert("Error: " + error);
+      console.log("Error: " + error);
     }
   };
 
@@ -62,10 +62,10 @@ function CoursesList({ role }: { role: string }) {
         console.log("Course added");
         getCurses();
       } else {
-        alert("Error: " + response.statusText);
+        console.log("Error: " + response.statusText);
       }
     } catch (error) {
-      alert("Error: " + error);
+      console.log("Error: " + error);
     }
   };
 
@@ -85,10 +85,10 @@ function CoursesList({ role }: { role: string }) {
         console.log("Course deleted");
         getCurses();
       } else {
-        alert("Error: " + response.statusText);
+        console.log("Error: " + response.statusText);
       }
     } catch (error) {
-      alert("Error: " + error);
+      console.log("Error: " + error);
     }
   };
 
@@ -97,30 +97,31 @@ function CoursesList({ role }: { role: string }) {
   }, []);
 
   return isAdmin ? (
-    <div className="w-80 flex flex-col justify-center item-center">
-      <h1 className="text-center my-5 text-4xl">Curses</h1>
+    <div className="w-2/3 flex flex-col justify-center item-center">
+      <h1 className="text-center my-5 text-4xl">Kursy</h1>
       <form
         id="changePasswordForm"
         onSubmit={handleAddCourse}
-        className="flex justify-center items-center gap-4 mt-8"
+        className="flex justify-center items-center gap-4 mt-8 w-2/3 m-auto"
       >
         <input
           type="text"
           className="min-w-[60%] mb-5 p-2 text-black"
-          placeholder="Course Name"
+          placeholder="Nazwa kursu"
           id="courseName"
           name="courseName"
+          maxLength={50}
           required
         />
         <button className="bg-red-500 text-white p-2 w-full mb-5" type="submit">
-          Add Course
+          Dodaj kurs
         </button>
       </form>
 
-      <ul>
+      <ul className="w-2/3 m-auto">
         {courses.map((course: any) => (
           <li
-            className="border-b-2 border-white border-opacity-50 mb-3 flex justify-between items-center"
+            className="border-b-2 border-white border-opacity-50 mb-3 flex justify-between items-center hover:bg-gray-200 transition-transform: duration-500 ease-in-out hover:text-black"
             key={course.id}
           >
             <Link href={`/dashboard/courses/${course.id}`}>
@@ -131,7 +132,7 @@ function CoursesList({ role }: { role: string }) {
               className="bg-red-500 text-white px-2 py-2 ml-5"
               onClick={() => deleteCourse(course.id)}
             >
-              Delete
+              Usuń kurs
             </button>
           </li>
         ))}
@@ -139,7 +140,7 @@ function CoursesList({ role }: { role: string }) {
     </div>
   ) : (
     <div className="w-80 flex flex-col justify-center item-center">
-      <h1 className="text-center my-5 text-4xl">Curses</h1>
+      <h1 className="text-center my-5 text-4xl">Kursy</h1>
       <ul>
         {courses.map((course: any) => (
           <li

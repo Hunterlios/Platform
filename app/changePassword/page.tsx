@@ -40,31 +40,31 @@ export default function changePassword() {
     <div className="font-mono flex flex-col items-center justify-center min-h-screen">
       <button
         onClick={() => router.back()}
-        className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+        className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
       >
-        Go back
+        Wróć
       </button>
-      <h1 className="text-6xl mb-5">Change Password</h1>
+      <h1 className="text-6xl mb-5">Zmień hasło</h1>
       <form
         id="changePasswordForm"
         onSubmit={handleChangePassword}
         className="flex flex-col justify-center items-center gap-4 mt-8"
       >
-        <label htmlFor="currentPassword">Current Password</label>
+        <label htmlFor="currentPassword">Aktualne hasło</label>
         <input
           className="text-black"
           type="password"
           id="currentPassword"
           name="currentPassword"
         />
-        <label htmlFor="newPassword">New Password</label>
+        <label htmlFor="newPassword">Nowe hasło</label>
         <input
           className="text-black"
           type="password"
           id="newPassword"
           name="newPassword"
         />
-        <label htmlFor="confirmationPassword">Confirm New Password</label>
+        <label htmlFor="confirmationPassword">Potwierdź nowe hasło</label>
         <input
           className="text-black"
           type="password"
@@ -75,7 +75,7 @@ export default function changePassword() {
           type="submit"
           className="bg-white text-black border-2 border-black p-4 mt-2 hover:bg-black hover:text-white hover:border-white"
         >
-          Change Password
+          Zmień hasło
         </button>
       </form>
     </div>

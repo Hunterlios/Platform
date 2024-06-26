@@ -49,15 +49,15 @@ export default function Courses() {
     <div className="flex flex-col justify-center items-center">
       <button
         onClick={() => router.back()}
-        className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+        className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
       >
-        Go back
+        Wróć
       </button>
       <CoursesList role={user.role} />
     </div>
   ) : (
-    <div>
-      <h1>Loading...</h1>
+    <div className="flex justify-center items-center font-mono min-h-screen">
+      <h1 className="text-xl">Loading...</h1>
     </div>
   );
 }

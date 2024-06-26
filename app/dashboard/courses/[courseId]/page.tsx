@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import TaskForm from "@/app/components/TaskForm";
+import TaskList from "@/app/components/TaskList";
 
 export default function CourseId({ params }: { params: { courseId: string } }) {
   const token = Cookies.get("token");
@@ -17,6 +19,7 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
   });
   const [needInvite, setNeedInvite] = useState(true);
   const router = useRouter();
+  const [role, setRole] = useState("");
 
   const getUser = async () => {
     if (token) {
@@ -32,13 +35,12 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
         );
         if (response.ok) {
           const data = await response.json();
+          setRole(data.role);
           return data.role;
         } else {
-          alert("Error: " + response.statusText);
           router.push("/");
         }
       } catch (error) {
-        alert("Error: " + error);
         router.push("/");
       }
     }
@@ -68,10 +70,10 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
             setNeedInvite(true);
           }
         } else {
-          alert("Error: " + response.statusText);
+          router.push("/dashboard");
         }
       } catch (error) {
-        alert("Error: " + error);
+        router.push("/dashboard");
       }
     } else if (token && role === "ADMIN") {
       try {
@@ -95,44 +97,13 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
             setNeedInvite(true);
           }
         } else {
-          alert("Error: " + response.statusText);
+          router.push("/dashboard");
         }
       } catch (error) {
-        alert("Error: " + error);
+        router.push("/dashboard");
       }
     }
   };
-
-  /* const checkIfInvitationSent = async (courseId: string) => {
-    if (token) {
-      try {
-        const response = await fetch(
-          `http://localhost:8080/api/v1/invitations/myInvitations`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          const courseIds = data.map((invitation: any) => invitation.course.id);
-          if (courseIds.includes(Number(courseId))) {
-            alert("User already sent invitation to course");
-            router.push("/dashboard/courses");
-          } else {
-            console.log("User did not send invitation to course");
-            setNeedInvite(true);
-          }
-        } else {
-          alert("Error: " + response.statusText);
-        }
-      } catch (error) {
-        alert("Error: " + error);
-      }
-    }
-   };*/
 
   const getCourseInfo = async (courseId: string) => {
     if (token) {
@@ -151,10 +122,10 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
             setCourse(data);
           });
         } else {
-          alert("Error: " + response.statusText);
+          router.push("/dashboard");
         }
       } catch (error) {
-        alert("Error: " + error);
+        router.push("/dashboard");
       }
     }
   };
@@ -176,10 +147,10 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
           console.log("User send invitation to course");
           router.push("/dashboard");
         } else {
-          alert("Error: " + response.statusText);
+          router.push("/dashboard");
         }
       } catch (error) {
-        alert("Error: " + error);
+        router.push("/dashboard");
       }
     } else if (token && role === "ADMIN") {
       alert("Admin cannot join course");
@@ -194,38 +165,40 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
 
   return course.id ? (
     needInvite ? (
-      <div className="flex flex-col gap-2 justify-center items-center min-h-screen font-mono">
+      <div className="flex flex-col gap-2 justify-center items-center min-h-screen font-mono my-10">
         <button
           onClick={() => router.back()}
-          className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+          className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
         >
-          Go back
+          Wróć
         </button>
-        <h1 className="text-4xl">Course: {course?.name}</h1>
+        <h1 className="text-4xl">Kurs: {course?.name}</h1>
         <h2 className="text-lg mt-5">
-          Author: {course?.author.firstName} {course?.author.lastName}
+          Prowadzący: {course?.author.firstName} {course?.author.lastName}
         </h2>
         <button
-          className="bg-white text-black mt-5 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+          className="bg-white text-black mt-5 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
           onClick={() => handleJoinCourse(String(course?.id))}
         >
-          Join Course
+          Dołącz do kursu
         </button>
       </div>
     ) : (
-      <div className="flex flex-col gap-2 justify-center items-center min-h-screen font-mono">
+      <div className="flex flex-col gap-2 justify-center items-center min-h-screen font-mono my-10">
         <button
           onClick={() => router.back()}
-          className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+          className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
         >
-          Go back
+          Wróć
         </button>
-        <h1 className=" text-4xl">Course: {course?.name}</h1>
+        <h1 className=" text-4xl">Kurs: {course?.name}</h1>
+        <TaskForm courseId={course.id} role={role} />
+        <TaskList courseId={course.id} role={role} />
       </div>
     )
   ) : (
-    <div className="flex flex-col gap-2 justify-center items-center min-h-screen font-mono">
-      <h1 className="text-4xl">Loading...</h1>
+    <div className="flex justify-center items-center font-mono min-h-screen">
+      <h1 className="text-xl">Loading...</h1>
     </div>
   );
 }

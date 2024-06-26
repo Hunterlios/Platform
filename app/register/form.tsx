@@ -27,16 +27,15 @@ export default function Form() {
       );
 
       if (!response.ok) {
-        alert("This email is already in use");
+        alert("Ten email jest już w użyciu");
       }
       const tokenData = await response.json();
       const { token } = tokenData;
       Cookies.set("token", token, { expires: 1 });
-      alert("Register successful");
-      //window.location.href = "/dashboard";
+      alert("Rejestracja zakończona sukcesem");
       router.push("/dashboard");
     } catch (error) {
-      console.log("Register failed", error);
+      alert("Błąd rejestracji");
     }
   };
   return (
@@ -47,32 +46,36 @@ export default function Form() {
       <input
         className="border border-black text-black"
         type="firstName"
-        placeholder="firstName"
+        placeholder="Imie"
         name="firstName"
+        required
       />
       <input
         className="border border-black text-black"
         type="lastName"
-        placeholder="lastName"
+        placeholder="Nazwisko"
         name="lastName"
+        required
       />
       <input
         className="border border-black text-black"
         type="email"
-        placeholder="email"
+        placeholder="Email"
         name="email"
+        required
       />
       <input
         className="border border-black text-black"
         type="password"
-        placeholder="password"
+        placeholder="Hasło"
         name="password"
+        required
       />
       <button
-        className="bg-white text-black mt-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out "
+        className="bg-white text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out "
         type="submit"
       >
-        Register
+        Zarejestruj
       </button>
     </form>
   );
