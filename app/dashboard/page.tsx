@@ -14,6 +14,7 @@ export default function Dashboard() {
     email: "",
     role: "",
   });
+  const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
 
   const getUser = async () => {
@@ -32,6 +33,8 @@ export default function Dashboard() {
         if (response.ok) {
           const data = await response.json();
           setUser(data);
+          setIsAdmin(data.role === "ADMIN");
+          return data;
         } else {
           alert("Error: " + response.statusText);
           router.push("/");
@@ -52,79 +55,73 @@ export default function Dashboard() {
     window.location.href = "/";
   };
 
-  return user.role === "ADMIN" ? (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24 font-mono">
-      <h1 className="text-7xl">Admin Dashboard</h1>
-      <div className="flex flex-col gap-2 mt-10 items-center">
-        {user.firstName ? (
+  return user.role ? (
+    isAdmin ? (
+      <main className="flex min-h-screen flex-col items-center justify-center p-24 font-mono">
+        <h1 className="text-7xl">Admin Dashboard</h1>
+        <div className="flex flex-col gap-2 mt-10 items-center">
           <p className="text-xl">
             Zalogowano jako: {user.firstName} {user.lastName}
             {/* <Link
-              className="hover:cursor-pointer hover:text-red-600"
-              href={"/dashboard/user"}
-            >
-              {user.firstName} {user.lastName}
-            </Link> */}
+                className="hover:cursor-pointer hover:text-red-600"
+                href={"/dashboard/user"}
+              >
+                {user.firstName} {user.lastName}
+              </Link> */}
           </p>
-        ) : (
-          <div className="flex justify-center items-center font-mono min-h-screen">
-            <h1 className="text-xl">Loading...</h1>
-          </div>
-        )}
-      </div>
-      <div className="flex w-2/3 justify-evenly items-center">
-        <button
-          onClick={logOut}
-          className="bg-white w-56 text-center text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-        >
-          Wyloguj
-        </button>
-        <Link
-          className="bg-white w-56 text-center text-black mt-8 px-4 py-2.5 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-          href={"/changePassword"}
-        >
-          Zmień hasło
-        </Link>
-        <Link
-          className="bg-white w-56 text-center text-black mt-8 px-4 py-2.5 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-          href={"/registerAdmin"}
-        >
-          Zarejestruj admina
-        </Link>
-      </div>
+        </div>
+        <div className="flex w-2/3 justify-evenly items-center">
+          <button
+            onClick={logOut}
+            className="bg-white w-56 text-center text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+          >
+            Wyloguj
+          </button>
+          <Link
+            className="bg-white w-56 text-center text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+            href={"/changePassword"}
+          >
+            Zmień hasło
+          </Link>
+          <Link
+            className="bg-white w-56 text-center text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+            href={"/registerAdmin"}
+          >
+            Zarejestruj admina
+          </Link>
+        </div>
 
-      <CoursesShortList role={user.role} />
-      <InvitationsList />
-    </main>
-  ) : (
-    <main className="flex min-h-screen flex-col items-center p-24 font-mono">
-      <h1 className="text-7xl">User Dashboard</h1>
-      <div className="flex flex-col gap-2 mt-10 items-center">
-        {user.firstName ? (
+        <CoursesShortList />
+        <InvitationsList />
+      </main>
+    ) : (
+      <main className="flex min-h-screen flex-col items-center p-24 font-mono">
+        <h1 className="text-7xl">User Dashboard</h1>
+        <div className="flex flex-col gap-2 mt-10 items-center">
           <p className="text-xl">
             Zalogowano jako: {user.firstName} {user.lastName}
           </p>
-        ) : (
-          <div className="flex justify-center items-center font-mono min-h-screen">
-            <h1 className="text-xl">Loading...</h1>
-          </div>
-        )}
-      </div>
-      <div className="flex w-2/3 justify-evenly items-center">
-        <button
-          onClick={logOut}
-          className="bg-white w-56 text-center text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-        >
-          Wyloguj
-        </button>
-        <Link
-          className="bg-white w-56 text-center text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-          href={"/changePassword"}
-        >
-          Zmień hasło
-        </Link>
-      </div>
-      <CoursesShortList role={user.role} />
-    </main>
+        </div>
+        <div className="flex w-2/3 justify-evenly items-center">
+          <button
+            onClick={logOut}
+            className="bg-white w-56 text-center text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+          >
+            Wyloguj
+          </button>
+          <Link
+            className="bg-white w-56 text-center text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+            href={"/changePassword"}
+          >
+            Zmień hasło
+          </Link>
+        </div>
+        <CoursesShortList />
+      </main>
+    )
+  ) : (
+    <div className="flex justify-center items-center font-mono min-h-screen">
+      <h1 className="text-2xl">Loading...</h1>
+    </div>
   );
 }

@@ -11,6 +11,13 @@ interface File {
   uploadDate: string;
 }
 
+type Student = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
+
 export default function Task() {
   const params = useParams();
   const token = Cookies.get("token");
@@ -26,7 +33,9 @@ export default function Task() {
   const [file, setFile] = useState<Array<File>>() as any;
   const [role, setRole] = useState("");
   const [students, setStudents] = useState<any[]>([]);
-  const [studentsNotSubmitted, setStudentsNotSubmitted] = useState<any[]>([]);
+  const [studentsNotSubmitted, setStudentsNotSubmitted] = useState<Student[]>(
+    []
+  );
   const router = useRouter();
 
   const getStudents = async () => {
@@ -48,31 +57,36 @@ export default function Task() {
     }
   };
 
-  //????????????????????? ten sam endpoint, nie działa
   const getNotSubmittedStudents = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/tasks/myTasksAdmin`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        data.forEach((task: any) => {
-          if (task.id === params.task) {
-            setStudentsNotSubmitted((prev) => [...prev, task]);
+    const role = await getUser();
+    if (role === "ADMIN") {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/v1/tasks/myUnsolvedTasksAdmin`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        });
-      } else {
-        console.log("Error: " + response.statusText);
+        );
+        if (response.ok) {
+          const data = await response.json();
+          data.forEach((task: any) => {
+            if (
+              task.taskDTO.id == params.task &&
+              studentsNotSubmitted.length == 0 &&
+              task.users.length > 0
+            ) {
+              setStudentsNotSubmitted(task.users);
+            }
+          });
+        } else {
+          console.log("Error: " + response.statusText);
+        }
+      } catch (error) {
+        console.log("Error: " + error);
       }
-    } catch (error) {
-      console.log("Error: " + error);
     }
   };
 
@@ -198,7 +212,7 @@ export default function Task() {
         }
       );
       if (response.ok) {
-        alert("File uploaded");
+        alert("Dodano plik");
         window.location.reload();
       } else {
         console.log("Error: " + response.statusText);
@@ -315,7 +329,7 @@ export default function Task() {
         <div className="font-mono flex flex-col min-h-screen justify-center items-center gap-2">
           <button
             onClick={() => router.back()}
-            className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+            className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
           >
             Wróć
           </button>
@@ -334,7 +348,7 @@ export default function Task() {
               " " +
               new Date(task.deadline).toISOString().split("T")[1].split(".")[0]}
           </p>
-          <h2 className="mt-2">Zadania studentów: </h2>
+          <h2 className="mt-5 mb-2 text-xl">Zadania studentów: </h2>
           <div className="flex flex-col border-2 border-white p-2 gap-2">
             {file.map((f: File) => (
               <div
@@ -356,13 +370,13 @@ export default function Task() {
                 )}
 
                 <button
-                  className="bg-white text-black p-2"
+                  className="bg-white text-black p-2 hover:bg-gray-300 transition-transform: duration-500 ease-in-out"
                   onClick={() => handleFileDownload(file.indexOf(f))}
                 >
                   {f.fileName}
                 </button>
                 <button
-                  className="bg-red-500 text-black p-2"
+                  className="bg-red-500 text-black p-2 hover:bg-red-700 transition-transform: duration-500 ease-in-out"
                   onClick={() => handleDeleteFile(file.indexOf(f))}
                 >
                   Usuń plik studenta
@@ -370,28 +384,32 @@ export default function Task() {
               </div>
             ))}
           </div>
-          {/* <div>
-            <h2>Nieoddane zadania:</h2>
+          <div className="mt-20 text-center">
+            <h2 className="mb-5 text-xl">Nieoddane zadania:</h2>
             <div>
-              {studentsNotSubmitted.map((s: any) => (
-                <div
-                  key={s.id}
-                  className="grid grid-cols-[1fr,1fr,1fr,1fr] gap-2 items-center text-center border-2 border-white p-2"
-                >
-                  <p>
-                    {s.author.firstName} {s.author.lastName}
-                  </p>
-                  <p>Brak oddanego zadania</p>
-                </div>
-              ))}
+              {studentsNotSubmitted.length > 0 ? (
+                studentsNotSubmitted.map((s: any) => (
+                  <div
+                    key={s.id}
+                    className="grid grid-cols-[1fr,1fr,1fr,1fr] gap-2 items-center text-center border-2 border-white p-2"
+                  >
+                    <p>
+                      {s.firstName} {s.lastName}
+                    </p>
+                    <p>Brak oddanego zadania</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center">Brak nieoddanych zadań</p>
+              )}
             </div>
-          </div> */}
+          </div>
         </div>
       ) : (
         <div className="font-mono flex flex-col min-h-screen justify-center items-center gap-2">
           <button
             onClick={() => router.back()}
-            className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+            className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
           >
             Wróć
           </button>
@@ -400,33 +418,45 @@ export default function Task() {
             Data stworzenia zadania: {new Date(task.date).toLocaleString()}
           </p>
           <p className="text-xl text-red-500">
-            Deadline zadania: {new Date(task.deadline).toLocaleString()}
+            Deadline zadania:{" "}
+            {new Date(task.deadline)
+              .toISOString()
+              .split("T")[0]
+              .split("-")
+              .reverse()
+              .join(".") +
+              " " +
+              new Date(task.deadline).toISOString().split("T")[1].split(".")[0]}
           </p>
-          <h2 className="mt-2">Zadania studentów: </h2>
-          <div className="flex flex-col border-2 border-white p-2 gap-2">
+          <h2 className="mt-5 mb-2 text-xl">Zadania studentów: </h2>
+          <div>
             <p>Brak oddanych zadań</p>
           </div>
-          {/* <div>
-            <h2>Nieoddane zadania:</h2>
+          <div className="mt-20 text-center">
+            <h2 className="mb-5 text-xl">Nieoddane zadania:</h2>
             <div>
-              {studentsNotSubmitted.map((s: any) => (
-                <div
-                  key={s.id}
-                  className="grid grid-cols-[1fr,1fr,1fr,1fr] gap-2 items-center text-center border-2 border-white p-2"
-                >
-                  <p>
-                    {s.author.firstName} {s.author.lastName}
-                  </p>
-                  <p>Brak oddanego zadania</p>
-                </div>
-              ))}
+              {studentsNotSubmitted.length > 0 ? (
+                studentsNotSubmitted.map((s: any) => (
+                  <div
+                    key={s.id}
+                    className="grid grid-cols-[1fr,1fr,1fr,1fr] gap-2 items-center text-center border-2 border-white p-2"
+                  >
+                    <p>
+                      {s.firstName} {s.lastName}
+                    </p>
+                    <p>Brak oddanego zadania</p>
+                  </div>
+                ))
+              ) : (
+                <p>Brak nieoddanych zadań</p>
+              )}
             </div>
-          </div> */}
+          </div>
         </div>
       )
     ) : (
       <div className="flex justify-center items-center font-mono min-h-screen">
-        <h1 className="text-xl">Loading...</h1>
+        <h1 className="text-2xl">Loading...</h1>
       </div>
     )
   ) : task.courseName ? (
@@ -434,7 +464,7 @@ export default function Task() {
       <div className="font-mono flex flex-col min-h-screen justify-center items-center gap-2">
         <button
           onClick={() => router.back()}
-          className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black rounded-md hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+          className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
         >
           Wróć
         </button>
@@ -443,18 +473,26 @@ export default function Task() {
           Data stworzenia zadania: {new Date(task.date).toLocaleString()}
         </p>
         <p className="text-xl text-red-500">
-          Deadline zadania: {new Date(task.deadline).toLocaleString()}
+          Deadline zadania:{" "}
+          {new Date(task.deadline)
+            .toISOString()
+            .split("T")[0]
+            .split("-")
+            .reverse()
+            .join(".") +
+            " " +
+            new Date(task.deadline).toISOString().split("T")[1].split(".")[0]}
         </p>
         <div className="flex items-center border-2 border-white pl-2">
           <h2 className="mr-2">Dodano zadanie: </h2>
           <button
-            className="bg-white text-black p-2"
+            className="bg-white text-black p-2 hover:bg-gray-300 transition-transform: duration-500 ease-in-out"
             onClick={() => handleFileDownload(0)}
           >
             {file?.fileName}
           </button>
           <button
-            className="bg-red-500 text-black p-2"
+            className="bg-red-500 text-black p-2 hover:bg-red-700 transition-transform: duration-500 ease-in-out"
             onClick={() => handleDeleteFile(0)}
           >
             Usuń plik
@@ -474,7 +512,15 @@ export default function Task() {
           Data stworzenia zadania: {new Date(task.date).toLocaleString()}
         </p>
         <p className="text-xl text-red-500">
-          Deadline zadania: {new Date(task.deadline).toLocaleString()}
+          Deadline zadania:{" "}
+          {new Date(task.deadline)
+            .toISOString()
+            .split("T")[0]
+            .split("-")
+            .reverse()
+            .join(".") +
+            " " +
+            new Date(task.deadline).toISOString().split("T")[1].split(".")[0]}
         </p>
         <div className="flex items-center border-2 border-white pl-2">
           <h2 className="mr-2">Dodaj zadanie:</h2>
@@ -492,7 +538,7 @@ export default function Task() {
     )
   ) : (
     <div className="flex justify-center items-center font-mono min-h-screen">
-      <h1 className="text-xl">Loading...</h1>
+      <h1 className="text-2xl">Loading...</h1>
     </div>
   );
 }

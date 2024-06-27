@@ -39,40 +39,53 @@ export default function Form() {
     }
   };
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-4 mx-auto max-w-md mt-10 font-mono"
-    >
-      <input
-        className="border border-black text-black"
-        type="firstName"
-        placeholder="Imie"
-        name="firstName"
-      />
-      <input
-        className="border border-black text-black"
-        type="lastName"
-        placeholder="Nazwisko"
-        name="lastName"
-      />
-      <input
-        className="border border-black text-black"
-        type="email"
-        placeholder="Email"
-        name="email"
-      />
-      <input
-        className="border border-black text-black"
-        type="password"
-        placeholder="Hasło"
-        name="password"
-      />
+    <div className="min-w-full min-h-full font-mono">
       <button
-        className="bg-white text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out "
-        type="submit"
+        onClick={() => router.back()}
+        className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
       >
-        Zarejestruj admina
+        Wróć
       </button>
-    </form>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 min-h-screen justify-center items-center"
+      >
+        <h1 className="text-6xl mb-5">Rejestracja Admina</h1>
+        <input
+          className="border border-black text-black w-1/4"
+          type="firstName"
+          placeholder="Imie"
+          name="firstName"
+          required
+        />
+        <input
+          className="border border-black text-black w-1/4"
+          type="lastName"
+          placeholder="Nazwisko"
+          name="lastName"
+          required
+        />
+        <input
+          className="border border-black text-black w-1/4"
+          type="email"
+          placeholder="Email"
+          name="email"
+          required
+        />
+        <input
+          className="border border-black text-black w-1/4"
+          type="password"
+          placeholder="Hasło"
+          name="password"
+          required
+        />
+        <button
+          className="bg-white text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out "
+          type="submit"
+        >
+          Zarejestruj admina
+        </button>
+      </form>
+    </div>
   );
 }

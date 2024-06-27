@@ -12,7 +12,6 @@ function CoursesList({ role }: { role: string }) {
     let response: Response;
     try {
       if (isAdmin) {
-        console.log("isAdmin: ", isAdmin);
         response = await fetch(
           "http://localhost:8080/api/v1/courses/myCoursesAdmin",
           {
@@ -113,7 +112,10 @@ function CoursesList({ role }: { role: string }) {
           maxLength={50}
           required
         />
-        <button className="bg-red-500 text-white p-2 w-full mb-5" type="submit">
+        <button
+          className="bg-red-500 text-white p-2 w-full mb-5 hover:bg-red-700 transition-transform: duration-500 ease-in-out"
+          type="submit"
+        >
           Dodaj kurs
         </button>
       </form>
@@ -121,15 +123,18 @@ function CoursesList({ role }: { role: string }) {
       <ul className="w-2/3 m-auto">
         {courses.map((course: any) => (
           <li
-            className="border-b-2 border-white border-opacity-50 mb-3 flex justify-between items-center hover:bg-gray-200 transition-transform: duration-500 ease-in-out hover:text-black"
+            className="border-b-2 border-white border-opacity-50 mb-3 grid grid-cols-[2fr,1fr] hover:bg-gray-200 transition-transform: duration-500 ease-in-out hover:text-black"
             key={course.id}
           >
-            <Link href={`/dashboard/courses/${course.id}`}>
+            <Link
+              className="overflow-hidden truncate"
+              href={`/dashboard/courses/${course.id}`}
+            >
               {course.name} - {course.author.firstName} {course.author.lastName}
             </Link>
 
             <button
-              className="bg-red-500 text-white px-2 py-2 ml-5"
+              className="bg-red-500 text-white px-2 py-2 ml-5 hover:bg-red-700 transition-transform: duration-500 ease-in-out"
               onClick={() => deleteCourse(course.id)}
             >
               Usuń kurs
@@ -149,7 +154,7 @@ function CoursesList({ role }: { role: string }) {
           >
             <Link
               href={`/dashboard/courses/${course.id}`}
-              className="flex justify-between hover:text-red-600"
+              className="flex justify-between hover:bg-gray-200 transition-transform: duration-500 ease-in-out hover:text-black overflow-hidden truncate p-2"
             >
               <span className="font-bold">{course.name}</span>
               <span>

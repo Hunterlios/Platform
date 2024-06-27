@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { get } from "http";
 
 function TaskList(params: { courseId: number; role: string }) {
   const [tasks, setTasks] = useState([]);
@@ -39,13 +40,12 @@ function TaskList(params: { courseId: number; role: string }) {
         body: JSON.stringify({ taskId: taskId, isIndividual: isIndividual }),
       });
       if (response.ok) {
-        alert("Task deleted");
-        window.location.reload();
+        getTasks();
       } else {
-        console.log("Error: " + response.statusText);
+        alert("Usuń najpierw wszystkie pliki związane z tym zadaniem!");
       }
     } catch (error) {
-      console.log("Error: " + error);
+      alert("Usuń najpierw wszystkie pliki związane z tym zadaniem!");
     }
   };
 
@@ -60,24 +60,29 @@ function TaskList(params: { courseId: number; role: string }) {
           {tasks.map((task: any) => (
             <li
               key={task.id}
-              className="flex justify-between border-b-2 items-center border-white mb-2 hover:bg-gray-200 transition-transform: duration-500 ease-in-out hover:text-black"
+              className="flex justify-between border-b-2 items-center border-white mb-2 "
             >
-              <Link className="" href={`./${params.courseId}/${task.id}`}>
-                {task.contents} -{" "}
-                {new Date(task.deadline)
-                  .toISOString()
-                  .split("T")[0]
-                  .split("-")
-                  .reverse()
-                  .join(".") +
-                  " " +
-                  new Date(task.deadline)
+              <Link
+                className="py-2 w-full hover:bg-gray-200 transition-transform: duration-500 ease-in-out hover:text-black"
+                href={`./${params.courseId}/${task.id}`}
+              >
+                <span>
+                  {task.contents} -{" "}
+                  {new Date(task.deadline)
                     .toISOString()
-                    .split("T")[1]
-                    .split(".")[0]}
+                    .split("T")[0]
+                    .split("-")
+                    .reverse()
+                    .join(".") +
+                    " " +
+                    new Date(task.deadline)
+                      .toISOString()
+                      .split("T")[1]
+                      .split(".")[0]}
+                </span>
               </Link>
               <button
-                className="bg-red-500 text-white px-2 py-1 hover:bg-red-700 transition-transform: duration-500 ease-in-out"
+                className="bg-red-500 w-1/5 text-white px-2 py-2 hover:bg-red-700 transition-transform: duration-500 ease-in-out"
                 onClick={() => handleDeleteTask(task.id, 1)}
               >
                 Usuń zadanie

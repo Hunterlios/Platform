@@ -61,30 +61,39 @@ export default function Form() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-2 mx-auto max-w-md mt-10 font-mono"
-    >
-      <input
-        className="border border-black text-black"
-        type="email"
-        placeholder="Email"
-        name="email"
-        required
-      />
-      <input
-        className="border border-black text-black"
-        type="password"
-        placeholder="Hasło"
-        name="password"
-        required
-      />
+    <div className="min-w-full min-h-full font-mono">
       <button
-        className="bg-white text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
-        type="submit"
+        onClick={() => router.back()}
+        className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
       >
-        Zaloguj
+        Wróć
       </button>
-    </form>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 min-h-screen justify-center items-center"
+      >
+        <h1 className="text-6xl mb-5">Logowanie</h1>
+        <input
+          className="border border-black text-black w-1/4"
+          type="email"
+          placeholder="Email"
+          name="email"
+          required
+        />
+        <input
+          className="border border-black text-black w-1/4"
+          type="password"
+          placeholder="Hasło"
+          name="password"
+          required
+        />
+        <button
+          className="bg-white text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
+          type="submit"
+        >
+          Zaloguj
+        </button>
+      </form>
+    </div>
   );
 }

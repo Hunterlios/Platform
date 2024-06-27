@@ -14,8 +14,6 @@ function TaskForm(params: { courseId: number; role: string }) {
       courseId: formData.get("courseId"),
     };
 
-    console.log(task.deadline);
-
     try {
       const response = await fetch(
         "http://localhost:8080/api/v1/tasks/createIndividualTask",
@@ -29,7 +27,6 @@ function TaskForm(params: { courseId: number; role: string }) {
         }
       );
       if (response.ok) {
-        alert("Task created");
         window.location.reload();
       } else {
         console.log("Error: " + response.statusText);

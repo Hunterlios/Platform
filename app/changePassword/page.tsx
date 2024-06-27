@@ -48,32 +48,35 @@ export default function changePassword() {
       <form
         id="changePasswordForm"
         onSubmit={handleChangePassword}
-        className="flex flex-col justify-center items-center gap-4 mt-8"
+        className="flex flex-col justify-center items-center gap-4 mt-8 min-w-full min-h-full"
       >
         <label htmlFor="currentPassword">Aktualne hasło</label>
         <input
-          className="text-black"
+          className="text-black w-1/3"
           type="password"
           id="currentPassword"
           name="currentPassword"
+          required
         />
         <label htmlFor="newPassword">Nowe hasło</label>
         <input
-          className="text-black"
+          className="text-black w-1/3"
           type="password"
           id="newPassword"
           name="newPassword"
+          required
         />
         <label htmlFor="confirmationPassword">Potwierdź nowe hasło</label>
         <input
-          className="text-black"
+          className="text-black w-1/3"
           type="password"
           id="confirmationPassword"
           name="confirmationPassword"
+          required
         />
         <button
           type="submit"
-          className="bg-white text-black border-2 border-black p-4 mt-2 hover:bg-black hover:text-white hover:border-white"
+          className="bg-white w-56 text-center text-black mt-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
         >
           Zmień hasło
         </button>

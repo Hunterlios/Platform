@@ -63,10 +63,8 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
           const data = await response.json();
           const courseIds = data.map((course: any) => course.id);
           if (courseIds.includes(Number(courseId))) {
-            console.log("User is in course");
             setNeedInvite(false);
           } else {
-            console.log("User is not in course");
             setNeedInvite(true);
           }
         } else {
@@ -90,10 +88,8 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
           const data = await response.json();
           const courseIds = data.map((course: any) => course.id);
           if (courseIds.includes(Number(courseId))) {
-            console.log("User is in course");
             setNeedInvite(false);
           } else {
-            console.log("User is not in course");
             setNeedInvite(true);
           }
         } else {
@@ -144,7 +140,6 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
           }
         );
         if (response.ok) {
-          console.log("User send invitation to course");
           router.push("/dashboard");
         } else {
           router.push("/dashboard");
@@ -153,7 +148,7 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
         router.push("/dashboard");
       }
     } else if (token && role === "ADMIN") {
-      alert("Admin cannot join course");
+      alert("Admin nie może dołączyć do kursu");
       router.push("/dashboard");
     }
   };
@@ -165,7 +160,7 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
 
   return course.id ? (
     needInvite ? (
-      <div className="flex flex-col gap-2 justify-center items-center min-h-screen font-mono my-10">
+      <div className="flex flex-col gap-2 justify-center items-center min-h-screen font-mono">
         <button
           onClick={() => router.back()}
           className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
@@ -184,7 +179,7 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
         </button>
       </div>
     ) : (
-      <div className="flex flex-col gap-2 justify-center items-center min-h-screen font-mono my-10">
+      <div className="flex flex-col gap-2 justify-center items-center min-h-screen font-mono">
         <button
           onClick={() => router.back()}
           className="absolute top-0 left-0 bg-white text-black m-8 px-4 py-2 border border-black hover:bg-black hover:text-white hover:border-white transition-transform: duration-500 ease-in-out"
@@ -198,7 +193,7 @@ export default function CourseId({ params }: { params: { courseId: string } }) {
     )
   ) : (
     <div className="flex justify-center items-center font-mono min-h-screen">
-      <h1 className="text-xl">Loading...</h1>
+      <h1 className="text-2xl">Loading...</h1>
     </div>
   );
 }
