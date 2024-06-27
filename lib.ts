@@ -16,14 +16,11 @@ const checkToken = async (token: string) => {
         }
       );
       if (!response.ok) {
-        console.log("Wrong user, please log in again");
         return false;
       } else {
-        console.log("User verified");
         return true;
       }
     } catch (error) {
-      console.log("Login failed" + error);
       return false;
     }
   }

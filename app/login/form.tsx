@@ -11,9 +11,7 @@ export default function Form() {
     const token = Cookies.get("token");
     try {
       if (token) {
-        console.log("token: ", token);
         const validToken = await checkToken(token as string);
-        console.log("validToken: ", validToken);
         if (!validToken) {
           Cookies.remove("token");
           window.location.href = "/login";

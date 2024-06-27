@@ -28,11 +28,9 @@ export default function Form() {
       );
 
       if (!response.ok) {
-        console.log(response.statusText + " " + data.email);
-        alert("This email is already in use");
+        alert("Ten email jest już zajęty");
       }
-      alert("Register successful");
-      //window.location.href = "/dashboard";
+      alert("Pomyślnie zarejestrowano admina");
       router.push("/dashboard");
     } catch (error) {
       console.log("Register failed", error);

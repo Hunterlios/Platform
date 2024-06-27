@@ -59,6 +59,7 @@ export default function Task() {
 
   const getNotSubmittedStudents = async () => {
     const role = await getUser();
+
     if (role === "ADMIN") {
       try {
         const response = await fetch(
@@ -67,11 +68,13 @@ export default function Task() {
             method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
+              ContentType: "application/json",
             },
           }
         );
         if (response.ok) {
           const data = await response.json();
+          console.log(data, params.task);
           data.forEach((task: any) => {
             if (
               task.taskDTO.id == params.task &&

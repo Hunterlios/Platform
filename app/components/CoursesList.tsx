@@ -58,7 +58,6 @@ function CoursesList({ role }: { role: string }) {
         }),
       });
       if (response.ok) {
-        console.log("Course added");
         getCurses();
       } else {
         console.log("Error: " + response.statusText);

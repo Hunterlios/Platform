@@ -5,16 +5,10 @@ import checkToken from "./lib";
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
   const tokenVerified = await checkToken(token as string);
-  console.log("tokenVerified: ", tokenVerified);
 
   if (!token || !tokenVerified) {
-    console.log("middleware ACTIVE REDIRECT TO HOME");
     return NextResponse.redirect(new URL("/", request.url));
-  }
-  //else if (request.nextUrl.searchParams.get("rol")) {
-  //   return NextResponse.redirect(new URL("/dashboard/courses", request.url));
-  //}
-  else {
+  } else {
     return NextResponse.next();
   }
 }

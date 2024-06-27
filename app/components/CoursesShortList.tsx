@@ -59,7 +59,6 @@ function CoursesShortList() {
         }),
       });
       if (response.ok) {
-        console.log("Course added");
         getCurses();
       } else {
         alert("Error: " + response.statusText);
